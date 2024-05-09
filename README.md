@@ -136,14 +136,83 @@ $ find -maxdepth 1 -type f | wc -l
 12
 ```
 
-6. Подсчитайте количество файлов в директории `~/boost_1_69_0` **включая** вложенные директории.
-7. Подсчитайте количество заголовочных файлов, файлов с расширением `.cpp`, сколько остальных файлов (не заголовочных и не `.cpp`).
-8. Найдите полный пусть до файла `any.hpp` внутри библиотеки *boost*.
-9. Выведите в консоль все файлы, где упоминается последовательность `boost::asio`.
-10. Скомпилирутйе *boost*. Можно воспользоваться [инструкцией](https://www.boost.org/doc/libs/1_61_0/more/getting_started/unix-variants.html#or-build-custom-binaries) или [ссылкой](https://codeyarns.com/2017/01/24/how-to-build-boost-on-linux/).
-11. Перенесите все скомпилированные на предыдущем шаге статические библиотеки в директорию `~/boost-libs`.
-12. Подсчитайте сколько занимает дискового пространства каждый файл в этой директории.
-13. Найдите *топ10* самых "тяжёлых".
+4. Подсчитайте количество файлов в директории `~/boost_1_69_0` **включая** вложенные директории.
+```
+$ find -type f | wc -l
+61191
+```
+
+5. Подсчитайте количество заголовочных файлов, файлов с расширением `.cpp`, сколько остальных файлов (не заголовочных и не `.cpp`).
+```
+$ find -type f -name "*.h" | wc -l
+296
+
+$ find -type f -name "*.hpp" | wc -l
+14912
+
+$ find -type f -name "*.cpp" | wc -l
+13774
+
+$ find -type f ! -name "*.hpp" ! -name "*.cpp" ! -name "*.h" | wc -l
+32209
+```
+
+6. Найдите полный пусть до файла `any.hpp` внутри библиотеки *boost*.
+```
+$ find -type f -iname "any.hpp"
+./boost/hana/any.hpp
+./boost/hana/fwd/any.hpp
+./boost/proto/detail/any.hpp
+./boost/type_erasure/any.hpp
+./boost/xpressive/detail/utility/any.hpp
+./boost/spirit/home/support/algorithm/any.hpp
+./boost/any.hpp
+./boost/fusion/algorithm/query/any.hpp
+./boost/fusion/algorithm/query/detail/any.hpp
+./boost/fusion/include/any.hpp
+```
+7. Выведите в консоль все файлы, где упоминается последовательность `boost::asio`.
+```
+$ grep -r "boost::asio"
+```
+[result](https://gist.github.com/ValyaLivsh/fb16f822117c42e6379acc76673ec09a#file-lab1-7-txt)
+
+8. Скомпилирутйе *boost*.
+```
+$ ./bootstrap.sh --prefix=boost_output
+```
+[result](https://gist.github.com/ValyaLivsh/db63e57fa6dfa460bd74daf052b575f3#file-lab1-8-txt)
+
+```
+$ ./b2 install -j 12
+```
+[result](https://gist.github.com/ValyaLivsh/0c1470d397c0c7a2e19fb2804818e213#file-lab1-8-2-txt)
+
+9. Перенесите все скомпилированные на предыдущем шаге статические библиотеки в директорию `~/boost-libs`.
+```
+$ mv boost_output/lib/ ~/boost-libs/
+```
+
+10. Подсчитайте сколько занимает дискового пространства каждый файл в этой директории.
+```
+$ find . -type f -exec du -h {} +
+```
+[result](https://gist.github.com/ValyaLivsh/054cd485838e60570c873e092b5f49fa#file-lab1-10-txt)
+
+11. Найдите *топ10* самых "тяжёлых".
+```
+$ find . -type f -exec du -h {} +|sort -rh | head -n 10
+154M    ./bin.v2/libs/math/build/gcc-13.2.1/release/threading-multi/src/tr1/pch.hpp.gch
+154M    ./bin.v2/libs/math/build/gcc-13.2.1/release/link-static/threading-multi/src/tr1/pch.hpp.gch
+12M     ./libs/math/doc/math.pdf
+4,5M    ./bin.v2/libs/wave/build/gcc-13.2.1/release/link-static/threadapi-pthread/threading-multi/visibility-hidden/libboost_wave.a
+3,7M    ./status/expected_results.xml
+3,2M    ./bin.v2/libs/regex/build/gcc-13.2.1/release/link-static/threading-multi/visibility-hidden/libboost_regex.a
+3,0M    ./libs/gil/io/test_images/raw/RAW_CANON_D30_SRGB.CRW
+2,7M    ./libs/asio/doc/reference.qbk
+2,7M    ./libs/algorithm/test/search_test_data/0001.corpus
+2,7M    ./bin.v2/libs/math/build/gcc-13.2.1/release/link-static/threading-multi/visibility-hidden/libboost_math_tr1l.a
+```
 
 ```
 Copyright (c) 2015-2021 The ISC Authors
