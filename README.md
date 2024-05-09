@@ -121,6 +121,7 @@ $ gist REPORT.md
 ```
 wget https://sourceforge.net/projects/boost/files/boost/1.69.0/boost_1_69_0.tar.gz
 ```
+[result] (<script src="https://gist.github.com/ValyaLivsh/5d74351d75812fb696340406bbb02c03.js"></script>)
 3. Разархивируйте скаченный файл в директорию `~/boost_1_69_0`
 4. Подсчитайте количество файлов в директории `~/boost_1_69_0` **не включая** вложенные директории.
 5. Подсчитайте количество файлов в директории `~/boost_1_69_0` **включая** вложенные директории.
